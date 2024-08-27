@@ -4,52 +4,62 @@ document
     splitParagraphAndCopy();
   });
 
-function splitParagraphAndCopy() {
-  let paragraph = document.getElementById("inputParagraph").value;
+async function splitParagraphAndCopy() {
+  try {
+    // Get the latest text from the clipboard
+    const paragraph = await navigator.clipboard.readText();
 
-  // Remove all newline characters
-  paragraph = paragraph.replace(/\n/g, " ");
+    // Remove all newline characters
+    const cleanedParagraph = paragraph.replace(/\n/g, " ");
 
-  if (paragraph.trim().length === 0) {
-    return;
+    if (cleanedParagraph.trim().length === 0) {
+      return;
+    }
+
+    // Split the paragraph into words
+    const words = cleanedParagraph.trim().split(/\s+/);
+    const totalWords = words.length;
+    const wordsPerRow = Math.ceil(totalWords / 13);
+    let rows = [];
+
+    for (let i = 0; i < 13; i++) {
+      const start = i * wordsPerRow;
+      const end = start + wordsPerRow;
+      const row = words.slice(start, end).join(" ");
+      rows.push(row);
+    }
+
+    // Join the rows to ensure proper distribution
+    let result = rows.join(" ");
+    result = result.split(/\s+/); // Re-split by words
+    const finalRows = [];
+
+    for (let i = 0; i < 13; i++) {
+      const start = i * wordsPerRow;
+      const end = start + wordsPerRow;
+      const row = result.slice(start, end).join(" ");
+      finalRows.push(row);
+    }
+
+    // Copy to clipboard
+    const finalText = finalRows.join("\n");
+    await copyTextToClipboard(finalText);
+  } catch (error) {
+    console.error("Failed to read from clipboard: ", error);
   }
-
-  // Split the paragraph into words
-  const words = paragraph.trim().split(/\s+/);
-  const totalWords = words.length;
-  const wordsPerRow = Math.ceil(totalWords / 13);
-  let rows = [];
-
-  for (let i = 0; i < 13; i++) {
-    const start = i * wordsPerRow;
-    const end = start + wordsPerRow;
-    const row = words.slice(start, end).join(" ");
-    rows.push(row);
-  }
-
-  // Join the rows to ensure proper distribution
-  let result = rows.join(" ");
-  result = result.split(/\s+/); // Re-split by words
-  const finalRows = [];
-
-  for (let i = 0; i < 13; i++) {
-    const start = i * wordsPerRow;
-    const end = start + wordsPerRow;
-    const row = result.slice(start, end).join(" ");
-    finalRows.push(row);
-  }
-
-  // Copy to clipboard
-  const finalText = finalRows.join("\n");
-  copyTextToClipboard(finalText);
-  document.querySelector("#inputParagraph").value = "";
 }
 
-function copyTextToClipboard(text) {
-  const tempTextarea = document.createElement("textarea");
-  tempTextarea.value = text;
-  document.body.appendChild(tempTextarea);
-  tempTextarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(tempTextarea);
+async function copyTextToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log("Text copied to clipboard");
+  } catch (error) {
+    console.error("Failed to copy text to clipboard: ", error);
+  }
 }
+
+const input = document.querySelector("#inputParagraph");
+input.addEventListener("mouseover", async (event) => {
+  console.log("Hello");
+  await splitParagraphAndCopy();
+});
