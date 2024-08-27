@@ -1,9 +1,3 @@
-document
-  .getElementById("inputParagraph")
-  .addEventListener("input", function () {
-    splitParagraphAndCopy();
-  });
-
 async function splitParagraphAndCopy() {
   try {
     // Get the latest text from the clipboard
@@ -58,8 +52,8 @@ async function copyTextToClipboard(text) {
   }
 }
 
-const input = document.querySelector("#inputParagraph");
-input.addEventListener("mouseover", async (event) => {
-  console.log("Hello");
+// Automatically process text when the Chrome tab is focused
+window.addEventListener("focus", async () => {
+  console.log("Tab focused");
   await splitParagraphAndCopy();
 });
