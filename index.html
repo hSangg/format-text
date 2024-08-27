@@ -4,17 +4,78 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Split Paragraph</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap");
+
+      .cinzel {
+        font-family: "Cinzel", serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: "Cinzel";
+        background-color: black;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        align-items: center;
+        justify-content: center;
+        width: 700px;
+        gap: 30px;
+      }
+
+      .main_text {
+        font-size: 50px;
+        color: white;
+        text-align: center;
+        line-height: 45px;
+      }
+      .main_input {
+        background-color: #16a34a;
+        width: 250px;
+        height: 50px;
+        outline: none;
+        border: none;
+        border-radius: 20px;
+      }
+
+      textarea:hover {
+        background-color: #0f766e;
+        transition: background-color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+      }
+    </style>
   </head>
   <body>
-    <h1>Paragraph Splitter</h1>
-    <textarea
-      id="inputParagraph"
-      rows="5"
-      cols="50"
-      placeholder="Paste your paragraph here..."
-    ></textarea>
-    <h2>Output:</h2>
-    <div id="output"></div>
+    <div class="container">
+      <h1 class="main_text cinzel">
+        Paragraph Splitter - A basic app which help you format what you paste on
+        the green input
+      </h1>
+      <textarea
+        id="inputParagraph"
+        class="main_input"
+        rows="5"
+        cols="50"
+      ></textarea>
+    </div>
 
     <script src="script.js"></script>
   </body>
